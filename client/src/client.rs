@@ -244,10 +244,12 @@ pub trait RpcApi: Sized {
     fn version(&self) -> Result<usize> {
         #[derive(Deserialize)]
         struct Response {
-            pub version: usize,
+            // pub version: usize,
+            pub protocolversion: usize,
         }
         let res: Response = self.call("getnetworkinfo", &[])?;
-        Ok(res.version)
+        // Ok(res.version)
+        Ok(res.protocolversion)
     }
 
     fn add_multisig_address(
