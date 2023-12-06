@@ -393,6 +393,8 @@ pub trait RpcApi: Sized {
         // The softfork fields are not backwards compatible:
         // - 0.18.x returns a "softforks" array and a "bip9_softforks" map.
         // - 0.19.x returns a "softforks" map.
+        // Print the version
+        println!("Version: {}", self.version()?);
         Ok(if self.version()? < 190000 {
             use crate::Error::UnexpectedStructure as err;
 

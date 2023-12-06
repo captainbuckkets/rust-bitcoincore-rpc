@@ -48,7 +48,7 @@ struct StdLogger;
 
 impl log::Log for StdLogger {
     fn enabled(&self, metadata: &log::Metadata) -> bool {
-        metadata.target().contains("jsonrpc") || metadata.target().contains("bitcoincore_rpc")
+        metadata.target().contains("jsonrpc") || metadata.target().contains("peercoincore_rpc")
     }
 
     fn log(&self, record: &log::Record) {
