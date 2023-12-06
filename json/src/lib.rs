@@ -91,7 +91,7 @@ pub struct GetNetworkInfoResultAddress {
 
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 pub struct GetNetworkInfoResult {
-    pub version: usize,
+    pub version: String,
     pub subversion: String,
     #[serde(rename = "protocolversion")]
     pub protocol_version: usize,
@@ -1033,14 +1033,14 @@ pub struct GetBlockchainInfoResult {
     /// The estimated size of the block and undo files on disk
     pub size_on_disk: u64,
     /// If the blocks are subject to pruning
-    pub pruned: bool,
+    // pub pruned: bool,
     /// Lowest-height complete block stored (only present if pruning is enabled)
-    #[serde(rename = "pruneheight")]
-    pub prune_height: Option<u64>,
-    /// Whether automatic pruning is enabled (only present if pruning is enabled)
-    pub automatic_pruning: Option<bool>,
-    /// The target size used by pruning (only present if automatic pruning is enabled)
-    pub prune_target_size: Option<u64>,
+    // #[serde(rename = "pruneheight")]
+    // pub prune_height: Option<u64>,
+    // /// Whether automatic pruning is enabled (only present if pruning is enabled)
+    // pub automatic_pruning: Option<bool>,
+    // /// The target size used by pruning (only present if automatic pruning is enabled)
+    // pub prune_target_size: Option<u64>,
     /// Status of softforks in progress
     #[serde(default)]
     pub softforks: HashMap<String, Softfork>,
