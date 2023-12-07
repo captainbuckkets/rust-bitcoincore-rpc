@@ -17,7 +17,6 @@ use std::collections::HashMap;
 use std::str::FromStr;
 
 use bitcoin::absolute::LockTime;
-// use bitcoin::address::{NetworkChecked, NetworkUnchecked};
 use bitcoin::address::NetworkChecked;
 use bitcoincore_rpc::json;
 use bitcoincore_rpc::jsonrpc::error::Error as JsonRpcError;
@@ -139,7 +138,6 @@ fn main() {
 
     test_get_network_info(&cl);
     unsafe { VERSION = cl.version().unwrap() };
-    println!("Version: {}", version());
 
     cl.create_wallet("testwallet", None, None, None, None).unwrap();
 

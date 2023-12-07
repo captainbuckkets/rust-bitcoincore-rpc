@@ -398,7 +398,6 @@ pub trait RpcApi: Sized {
         // Print the version
         // Print raw
 
-        println!("Version: {}", self.version()?);
         Ok(if self.version()? < 190000 {
             use crate::Error::UnexpectedStructure as err;
 
