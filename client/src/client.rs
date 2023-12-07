@@ -396,7 +396,7 @@ pub trait RpcApi: Sized {
         // - 0.19.x returns a "softforks" map.
         // Print the version
         println!("Version: {}", self.version()?);
-        Ok(if self.version()? < 190000 {
+        Ok(if self.version()? < 70017 {
             use crate::Error::UnexpectedStructure as err;
 
             // First, remove both incompatible softfork fields.
