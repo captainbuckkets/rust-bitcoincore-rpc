@@ -1025,6 +1025,8 @@ pub struct GetBlockchainInfoResult {
     pub best_block_hash: bitcoin::BlockHash,
     /// The current difficulty
     pub difficulty: f64,
+    /// Time of block
+    pub time: u64,
     /// Median time for the current best block
     #[serde(rename = "mediantime")]
     pub median_time: u64,
