@@ -895,14 +895,17 @@ pub enum SoftforkType {
     Other,
 }
 
+#[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
+pub struct SoftforkActive {
+    pub status: bool,
+}
+
 /// Status of a softfork
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize)]
 pub struct Softfork {
-    #[serde(rename = "type")]
-    pub type_: SoftforkType,
-    pub bip9: Option<Bip9SoftforkInfo>,
-    pub height: Option<u32>,
-    pub active: bool,
+    pub id: String,
+    pub version: u64,
+    pub active:SoftforkActive
 }
 
 #[allow(non_camel_case_types)]

@@ -18,6 +18,7 @@ use std::{fmt, result};
 use crate::{bitcoin, deserialize_hex};
 // use bitcoin::hex::DisplayHex;
 use bitcoin_private::hex::exts::DisplayHex;
+use json::SoftforkActive;
 use jsonrpc;
 use serde;
 use serde_json;
@@ -401,13 +402,12 @@ pub trait RpcApi: Sized {
 
             // First, remove both incompatible softfork fields.
             // We need to scope the mutable ref here for v1.29 borrowck.
-            let (bip9_softforks, old_softforks) = {
+            let old_softforks = {
                 let map = raw.as_object_mut().ok_or(err)?;
-                let bip9_softforks = map.remove("bip9_softforks").ok_or(err)?;
                 let old_softforks = map.remove("softforks").ok_or(err)?;
                 // Put back an empty "softforks" field.
                 map.insert("softforks".into(), serde_json::Map::new().into());
-                (bip9_softforks, old_softforks)
+                old_softforks
             };
             let mut ret: json::GetBlockchainInfoResult = serde_json::from_value(raw)?;
 
@@ -415,44 +415,20 @@ pub trait RpcApi: Sized {
             for sf in old_softforks.as_array().ok_or(err)?.iter() {
                 let json = sf.as_object().ok_or(err)?;
                 let id = json.get("id").ok_or(err)?.as_str().ok_or(err)?;
-                let reject = json.get("reject").ok_or(err)?.as_object().ok_or(err)?;
-                let active = reject.get("status").ok_or(err)?.as_bool().ok_or(err)?;
+                let version = json.get("version").ok_or(err)?.as_u64().ok_or(err)?;
+                let active_obj = json.get("active").ok_or(err)?.as_object().ok_or(err)?;
+                let status = active_obj.get("status").ok_or(err)?.as_bool().ok_or(err)?;
+
                 ret.softforks.insert(
                     id.into(),
                     json::Softfork {
-                        type_: json::SoftforkType::Buried,
-                        bip9: None,
-                        height: None,
-                        active: active,
-                    },
-                );
-            }
-            for (id, sf) in bip9_softforks.as_object().ok_or(err)?.iter() {
-                #[derive(Deserialize)]
-                struct OldBip9SoftFork {
-                    pub status: json::Bip9SoftforkStatus,
-                    pub bit: Option<u8>,
-                    #[serde(rename = "startTime")]
-                    pub start_time: i64,
-                    pub timeout: u64,
-                    pub since: u32,
-                    pub statistics: Option<json::Bip9SoftforkStatistics>,
-                }
-                let sf: OldBip9SoftFork = serde_json::from_value(sf.clone())?;
-                ret.softforks.insert(
-                    id.clone(),
-                    json::Softfork {
-                        type_: json::SoftforkType::Bip9,
-                        bip9: Some(json::Bip9SoftforkInfo {
-                            status: sf.status,
-                            bit: sf.bit,
-                            start_time: sf.start_time,
-                            timeout: sf.timeout,
-                            since: sf.since,
-                            statistics: sf.statistics,
-                        }),
-                        height: None,
-                        active: sf.status == json::Bip9SoftforkStatus::Active,
+                        id: id.into(),
+                        version: version,
+                        active: SoftforkActive{status},
+                        // type_: json::SoftforkType::Buried,
+                        // bip9: None,
+                        // height: None,
+                        // active: active,
                     },
                 );
             }
