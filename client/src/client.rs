@@ -475,6 +475,7 @@ pub trait RpcApi: Sized {
     ) -> Result<Transaction> {
         let mut args = [into_json(txid)?, into_json(false)?, opt_into_json(block_hash)?];
         let hex: String = self.call("getrawtransaction", handle_defaults(&mut args, &[null()]))?;
+        println!("gtr hex: {}", hex);
         deserialize_hex(&hex)
     }
 
@@ -531,7 +532,9 @@ pub trait RpcApi: Sized {
         include_watchonly: Option<bool>,
     ) -> Result<json::GetTransactionResult> {
         let mut args = [into_json(txid)?, opt_into_json(include_watchonly)?];
-        self.call("gettransaction", handle_defaults(&mut args, &[null()]))
+        let x: Result<json::GetTransactionResult> = self.call("gettransaction", handle_defaults(&mut args, &[null()]));
+        println!("get_transaction: {:?}", x);
+        return x
     }
 
     fn list_transactions(
