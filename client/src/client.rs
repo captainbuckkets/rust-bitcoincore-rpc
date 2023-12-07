@@ -337,6 +337,7 @@ pub trait RpcApi: Sized {
 
     fn get_block(&self, hash: &bitcoin::BlockHash) -> Result<Block> {
         let hex: String = self.call("getblock", &[into_json(hash)?, 0.into()])?;
+        println!("get_block: {}", hex);
         deserialize_hex(&hex)
     }
 
@@ -398,6 +399,7 @@ pub trait RpcApi: Sized {
         // Print the version
         // Print raw
 
+        // Don't know what I will do with this yet
         Ok(if self.version()? < 190000 {
             use crate::Error::UnexpectedStructure as err;
 
