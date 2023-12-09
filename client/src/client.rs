@@ -336,8 +336,8 @@ pub trait RpcApi: Sized {
     }
 
     fn get_block(&self, hash: &bitcoin::BlockHash) -> Result<Block> {
+        println!("get_block: {}", hash);
         let hex: String = self.call("getblock", &[into_json(hash)?, 0.into()])?;
-        println!("get_block: {}", hex);
         deserialize_hex(&hex)
     }
 
