@@ -1428,10 +1428,10 @@ fn test_derive_addresses(cl: &Client) {
         r"tvaRmVyr8Ddf7SjZ2ZfMx9RicjYAXhuh3fmLiVLPodPEqnQQURUfrBKiiVZc8/0/*)#g8l47ngv",
     );
     assert_eq!(cl.derive_addresses(descriptor, Some([0, 1])).unwrap(), vec![
-        // "bcrt1q5n5tjkpva8v5s0uadu2y5f0g7pn4h5eqaq2ux2".parse::<Address<NetworkUnchecked>>().unwrap(),
-        // "bcrt1qcgl303ht03ja2e0hudpwk7ypcxk5t478wspzlt".parse::<Address<NetworkUnchecked>>().unwrap(),
-        "bcrt1q5n5tjkpva8v5s0uadu2y5f0g7pn4h5eqaq2ux2".parse().unwrap(),
-        "bcrt1qcgl303ht03ja2e0hudpwk7ypcxk5t478wspzlt".parse().unwrap(),
+        // "pcrt1q5n5tjkpva8v5s0uadu2y5f0g7pn4h5eqaq2ux2".parse::<Address<NetworkUnchecked>>().unwrap(),
+        // "pcrt1qcgl303ht03ja2e0hudpwk7ypcxk5t478wspzlt".parse::<Address<NetworkUnchecked>>().unwrap(),
+        "pcrt1q5n5tjkpva8v5s0uadu2y5f0g7pn4h5eqaq2ux2".parse().unwrap(),
+        "pcrt1qcgl303ht03ja2e0hudpwk7ypcxk5t478wspzlt".parse().unwrap(),
     ]);
     assert!(cl.derive_addresses(descriptor, None).is_err()); // Range must be specified for a ranged descriptor
 }
