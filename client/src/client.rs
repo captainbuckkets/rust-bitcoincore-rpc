@@ -336,7 +336,6 @@ pub trait RpcApi: Sized {
     }
 
     fn get_block(&self, hash: &bitcoin::BlockHash) -> Result<Block> {
-        println!("get_block: {}", hash);
         let hex: String = self.call("getblock", &[into_json(hash)?, 0.into()])?;
         deserialize_hex(&hex)
     }
@@ -475,7 +474,6 @@ pub trait RpcApi: Sized {
     ) -> Result<Transaction> {
         let mut args = [into_json(txid)?, into_json(false)?, opt_into_json(block_hash)?];
         let hex: String = self.call("getrawtransaction", handle_defaults(&mut args, &[null()]))?;
-        println!("gtr hex: {}", hex);
         deserialize_hex(&hex)
     }
 
@@ -533,7 +531,6 @@ pub trait RpcApi: Sized {
     ) -> Result<json::GetTransactionResult> {
         let mut args = [into_json(txid)?, opt_into_json(include_watchonly)?];
         let x: Result<json::GetTransactionResult> = self.call("gettransaction", handle_defaults(&mut args, &[null()]));
-        println!("get_transaction: {:?}", x);
         return x
     }
 
